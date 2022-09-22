@@ -1,5 +1,0 @@
-container: "{{
-  ( ansible_facts.virtualization_role | default('guest') == 'guest' and
-    ansible_facts.virtualization_type | default(ns_only_virt_types[0]) in ns_only_virt_types )
-  }}"
-guest: "{{ ansible_facts.virtualization_role | default('NA') == 'guest' }}"
