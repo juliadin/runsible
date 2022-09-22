@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION='1.8.1'
+VERSION='1.8.2'
 AUTHOR='Julia Brunenberg'
 RELEASE_DATE='2022-09-22'
 PRODUCT='runsible.sh - ansible-playbook launch wrapper'
