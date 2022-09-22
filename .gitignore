@@ -1,1 +1,16 @@
-*.tar.gz
+# Release files
+runsible_*.tar.gz
+
+# generated configs 
+galaxy-requirements.local.yml
+requirements.local.txt
+runsible.yml
+playbooks/tasks/fact_groups.yml
+ansible.cfg.new
+ansible.cfg.reference
+
+# runtime data
+venv
+.ansible
+**/.flag*
+**/*.pyc
