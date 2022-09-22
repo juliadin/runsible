@@ -1,0 +1,7 @@
+# put your changes and local dependencies into roles/galaxy-requirements.local.yml
+
+roles:
+
+collections:
+  - name: juliadin.vartools
+    version: '>=1.0.4'

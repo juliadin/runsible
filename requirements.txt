@@ -1,0 +1,8 @@
+
+# place local modifications in requirements.local.txt. They will be picked up automatically
+ansible-lint>=6.6.1
+ansible>=6.4.0
+argcomplete>=2.0.0
+netaddr>=0.8.0
+paramiko>=2.11.0
+pylibyaml>=0.1.0

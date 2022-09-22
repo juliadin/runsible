@@ -1,0 +1,13 @@
+- name: Import dynamic groups
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Set fact-based groups
+    include_tasks:
+      file: tasks/fact_groups.yml
+
+- name: Test Playbook def DEFINITION
+  hosts: TARGET
+  gather_facts: false
+  roles:
+    - __placeholder_role
