@@ -1,10 +1,5 @@
 #!/bin/bash
 
-VERSION='1.8.2'
-AUTHOR='Julia Brunenberg'
-RELEASE_DATE='2022-09-22'
-PRODUCT='runsible.sh - ansible-playbook launch wrapper'
-
 VENV="venv"
 INTERPRETER="$( which python3 )"
 
@@ -25,8 +20,15 @@ MYFULL="$(realpath -- "$SELF")"
 MYPATH="$(dirname -- "$MYFULL")"
 [ -z "${MYPATH}" ] && echo "Could not find my path" && exit 1 
 INSTANCE="$(basename -- "$MYPATH")"
+BASE_LIBRARY="$MYPATH/helpers/_lib.sh"
 
-FACT_CACHE="${MYPATH}/.pickle_facts"
+# shellcheck source=helpers/_lib.sh
+if [ -e "$BASE_LIBRARY" ]; then 
+    source "$BASE_LIBRARY"
+else
+    echo "Library not found: '$BASE_LIBRARY'"
+    exit 1
+fi
 
 GALAXY_REQUIREMENTS="${MYPATH}/galaxy-requirements.yml"
 GALAXY_LOCAL_REQUIREMENTS="${MYPATH}/galaxy-requirements.local.yml"
@@ -511,7 +513,7 @@ function fact_check_mode() {
     ERRORTAG="$(mktemp)"
 
     find "${FACTS_DIR}" -mindepth 1 -maxdepth 1 -type f | while read -r FILE; do
-        "${FACT_CHECK}" -q -f "$FILE" -c "$FACT_CACHE"
+        "${FACT_CHECK}" -q -f "$FILE" -c "$RUNSIBLE_FACT_CACHE"
         RC=$?
         FN="$( basename "$FILE" )"
         
@@ -702,28 +704,12 @@ while getopts "hL:lPf:t:Fvei:uUcICdDsp:m:r:" OPT; do
             mkdir -p "$LOCK_PATH"
         ;;
         P)
-            TAR_FILES=( 
-                "runsible.sh"
-                "runsible.example.yml"
-                "requirements.txt"
-                "galaxy-requirements.yml"
-                "helpers/check_fact.py"
-                "helpers/relative_paths.sh"
-                "helpers/fact_survey.py"
-                "helpers/matter_of_fact.py"
-                "helpers/conf_to_env.py"
-                "helpers/dir_tools.py"
-                "helpers/check_requirements.py"
-                "playbooks/__TEST.yml"
-                "group_vars/all/_fake_facts.yml"
-                ".gitignore"
-                )
             TAR_DEST="runsible_$VERSION.tar.gz"
             echo "Package mode - packaging to '$TAR_DEST'"
             if [ -e "$TAR_DEST" ]; then
                 echo "Not overwriting existing package '$TAR_DEST'."
             else
-                tar -C "${MYPATH}" -czvf "$TAR_DEST" "${TAR_FILES[@]}"
+                tar -C "${MYPATH}" -czvf "$TAR_DEST" "${RUNSIBLE_TAR_FILES[@]}"
             fi
         ;;
         p)
