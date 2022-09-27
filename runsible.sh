@@ -3,12 +3,12 @@
 VENV="venv"
 INTERPRETER="$( which python3 )"
 
-REQUIREMENTS=( flock realpath dirname git logger "$INTERPRETER" )
+REQUIREMENTS=( pip3 flock realpath dirname git logger "$INTERPRETER" )
 VENV_REQUIREMENTS=( bin/ansible bin/ansible-playbook bin/ansible-galaxy bin/ansible-lint )
 
 if [ -z "$INTERPRETER" ]; then
     echo "Python3 not found, bootstrapping from apt"
-    sudo apt install python3 virtualenv python3-pip
+    sudo apt install python3 python3-pip
 fi
 
 SELF="$0"
@@ -87,6 +87,22 @@ function build_pip_requirements() {
 # put your local requirements here, they will be honored as stated here.
 
 EOF
+    fi
+}
+
+function pvenv() {
+    ARGS=( "${@}")
+
+    PVENV="$( which virtualenv )"
+    if [ -z "$PVENV" ]; then
+        if "$INTERPRETER" -c 'import venv'; then
+            "$INTERPRETER" -m venv "${ARGS[@]}"
+        else
+            echo "neither virtualenv nor python3 module 'venv' were found"
+            exit 1
+        fi
+    else
+        $PVENV -p "$INTERPRETER" "${ARGS[@]}"
     fi
 }
 
@@ -181,6 +197,7 @@ rm "$TMP_INCLUDE" 2>/dev/null
 PLAYBOOKS=()
 ANS_ARGS=()
 QUIET=""
+
 
 
 function check_requirement() {
@@ -449,7 +466,7 @@ function ensure_venv() {
     ACTIVATOR="$( find_activator )"
 
     if [ -z "${ACTIVATOR}" ]; then
-        env virtualenv -p "${INTERPRETER}" "${VENV_PATH}"
+        pvenv "${VENV_PATH}"
     fi
     (
         source "$( find_activator )" || abandon_ship "Something went wrong when creating venv '${VENV_PATH}'"
@@ -558,6 +575,7 @@ done
 if [ "${#MISSING_REQ[@]}" -gt 0 ]; then
     echo "The following required programs were not found in path"
     echo "${MISSING_REQ[*]}"
+    exit 1
 fi
 
 MKROLES=()

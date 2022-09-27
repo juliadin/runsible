@@ -1,7 +1,7 @@
 #!/bin/bash
-VERSION='1.8.2'
+VERSION='1.8.3'
 AUTHOR='Julia Brunenberg'
-RELEASE_DATE='2022-09-22'
+RELEASE_DATE='2022-09-27'
 PRODUCT='runsible.sh - ansible-playbook launch wrapper'
 
 RUNSIBLE_FACT_CACHE="${MYPATH}/.pickle_facts"
