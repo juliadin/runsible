@@ -1,8 +1,8 @@
 # runsible
 an ansible playbook runner yet to be documented
 
-    runsible.sh - ansible-playbook launch wrapper - Version 1.8.2
-    2022-09-22 by Julia Brunenberg
+    runsible.sh - ansible-playbook launch wrapper - Version 1.9.0
+    2024-09-27 by Julia Brunenberg
 
     Usage: ./runsible.sh ... 
 

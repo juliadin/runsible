@@ -162,8 +162,8 @@ if [ "$CMD_INVOKED" == "runsible_complete_bash" ] || [ "$CMD_INVOKED" == "-bash"
     return 0
 fi
 
-mkdir -p "${MYPATH}/playbooks/tasks/"
-touch "${MYPATH}/playbooks/tasks/fact_groups.yml"
+mkdir -p "${MYPATH}/roles/fact_groups/tasks/"
+touch "${MYPATH}/roles/fact_groups/tasks/main.yml"
 
 LOCK_MODE=""
 LOCK_EXIT=253
